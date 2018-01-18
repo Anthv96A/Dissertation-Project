@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://sportperformance.cmyw8uvde4sn.us-east-2.rds.amazonaws.com:3306/sportsperformancedb
+    username: ENC(8ky5BDIJW60cIZeEnZeA1A==)
+    password: ENC(hElzPs6BewNwO1pvq7eJZl30wbxRSORt)
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: true

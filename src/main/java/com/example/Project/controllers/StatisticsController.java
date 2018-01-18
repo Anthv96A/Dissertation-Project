@@ -20,7 +20,6 @@ public class StatisticsController {
 
     private final GoalRepository goalRepository;
 
-
     @GetMapping("/all")
     public List<Goal> getAllGoals(){
         List<Goal> goalList = new ArrayList<>();

@@ -161,7 +161,7 @@ public class GameServiceImpl implements GameService {
 		Optional<Goal> goal = goalRepository.findByName(name);
 
 		if (!goal.isPresent()) {
-			throw new RuntimeException("Not found");
+			return null;
 		}
 
 		List<Game> gameList = goal.get().getGames();

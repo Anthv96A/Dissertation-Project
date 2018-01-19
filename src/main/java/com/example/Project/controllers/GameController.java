@@ -51,6 +51,12 @@ public class GameController {
 
     @GetMapping("/last/{name}")
     public GameDTO getLastGameOnGoal(@PathVariable String name){
-        return gameService.findLastGameByGoalName(name);
+        GameDTO gameDTO = gameService.findLastGameByGoalName(name);
+
+        if(gameDTO == null){
+            return new GameDTO();
+        }
+
+        return gameDTO;
     }
 }

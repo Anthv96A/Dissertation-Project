@@ -12,7 +12,7 @@ public class GameToGameDTO {
         GameDTO gameDTO = new GameDTO();
         gameDTO.setName(game.getName());
         gameDTO.setDatePlayed(game.getDatePlayed());
-        gameDTO.setGoals(game.getGoals());
+       // gameDTO.setGoals(game.getGoals());
         gameDTO.setHoles(game.getHoles());
         gameDTO.setPostEmotions(game.getPostEmotions());
         gameDTO.setPreEmotions(game.getPreEmotions());

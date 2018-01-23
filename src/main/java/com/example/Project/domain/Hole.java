@@ -8,7 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "hole")
 @Getter
 @Setter
 @ToString

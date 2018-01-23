@@ -37,11 +37,6 @@ public class GameController {
         return gameService.findById(id);
     }
 
-//	@PostMapping("/new")
-//    public Game saveNewGame(@RequestBody Game game) {
-//		System.out.println("We hit the controller" + game.toString());
-//		return gameService.createOrUpdate(game);
-//    }
 
     @PostMapping("/new")
     public Game saveNewGame(@RequestBody GameDTO game) {

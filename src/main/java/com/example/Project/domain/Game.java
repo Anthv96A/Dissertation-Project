@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "game")
 @Getter
 @Setter
 public class Game {

@@ -93,7 +93,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             map = new HashMap<>();
             for(Object[] objects: result){
                 if(objects[1] instanceof BigInteger){
-                    map.put((String) objects[0], (BigInteger)objects[1]);
+                    map.put((String) objects[0], (BigInteger) objects[1]);
                 } else if(objects[1] instanceof BigDecimal){
                     map.put((String) objects[0], (BigDecimal) objects[1]);
                 }

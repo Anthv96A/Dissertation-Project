@@ -23,18 +23,6 @@ public class StatisticsController {
     private final GoalRepository goalRepository;
     private final StatisticsService statisticsService;
 
-//    @GetMapping("/all")
-//    public List<Goal> getAllGoals(){
-//        List<Goal> goalList = new ArrayList<>();
-//
-//        Iterator<Goal> ig = goalRepository.findAll().iterator();
-//
-//        while (ig.hasNext()){
-//            goalList.add(ig.next());
-//        }
-//
-//        return goalList;
-//    }
 
     @GetMapping("/{name}")
     public Goal getGoal(@PathVariable String name){
@@ -57,10 +45,6 @@ public class StatisticsController {
 //        return gameList.size();
 //    }
 
-//    @GetMapping("/count/total")
-//    public long getTotalGameCount(){
-//        return statisticsService.totalGames();
-//    }
 
     @GetMapping("/all")
     public StatisticsDTO getAllStats(){

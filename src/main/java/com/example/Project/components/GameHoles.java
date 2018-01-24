@@ -1,8 +1,5 @@
 package com.example.Project.components;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import com.example.Project.DTOs.GameDTO;
 import com.example.Project.domain.Goal;

@@ -15,119 +15,6 @@ import com.example.Project.domain.Hole;
 public class GameHoles {
 
 	private final GoalRepository goalRepository;
-	
-//	public Game createGame(Game game) {
-//
-//		Goal gameGoal = null;
-//
-//		boolean doesExist = goalRepository.existsByName(game.getGoals().get(0).getName());
-//
-//
-//		System.out.println(doesExist);
-//
-//		if(doesExist){
-//			Optional<Goal> goalOptional = goalRepository.findByName(game.getGoals().get(0).getName());
-//
-//			System.out.println(goalOptional.get());
-//
-//			if(goalOptional.isPresent()){
-//				game.getGoals().add(goalOptional.get());
-//				goalOptional.get().getGames().add(game);
-//	//			goalRepository.save(goalOptional.get());
-//			} else{
-////				gameGoal = new Goal();
-////				gameGoal.setName(game.getGoals().get(0).getName());
-////				gameGoal.getGames().add(game);
-////				goalRepository.save(gameGoal);
-//			}
-//
-//		} else{
-////			gameGoal = new Goal();
-////			gameGoal.setName(game.getGoals().get(0).getName());
-////			gameGoal.getGames().add(game);
-////			game.getGoals().add(gameGoal);
-////			goalRepository.save(gameGoal);
-//		}
-//
-//
-//
-//		List<Hole> holes = new ArrayList<>();
-//		Hole hole = new Hole();
-//
-//		for(Hole h: game.getHoles()) {
-//			hole.setHoleNumber(h.getHoleNumber());
-//			hole.setScore(h.getScore());
-//			hole.setGame(game);
-//			holes.add(hole);
-//			hole = new Hole();
-//		}
-//
-//		game.setHoles(holes);
-//
-//
-////		for(Goal g: game.getGoals()){
-////			if(doesExist){
-////				gameGoal.getGames().add(game);
-////
-////			} else{
-////				gameGoal.setName(g.getName());
-////				gameGoal.getGames().add(game);
-////			}
-////
-////			goalRepository.save(gameGoal);
-////		}
-//
-//
-////		List<Goal> goals = new ArrayList<>();
-////		Optional<Goal> goal = null;
-////
-////		// Optional<Goal> goalOptional = goalRepository.findByName(game.getGoals().get(0).getName());
-////	//	boolean doesExist = goalRepository.existsByName(game.getGoals().get(0).getName());
-////
-////		if(doesExist){
-////			System.out.println("Present");
-////			goal = goalRepository.findByName(game.getGoals().get(0).getName());
-////			goal.get().getGames().add(newGame);
-////			goalRepository.save(goal.get());
-////
-////		} else{
-////			System.out.println("Not Present");
-////			Goal newGoal = new Goal();
-////			newGoal.getGames().add(newGame);
-////			goalRepository.save(newGoal);
-////		}
-//
-//
-//
-////		if(goalOptional.isPresent()){
-////			System.out.println("Present");
-////		} else{
-////			System.out.println("Not Present");
-////		}
-//
-////		List<Goal> goals = new ArrayList<>();
-//
-////		for(Goal g: game.getGoals()){
-////			goal.setName(g.getName());
-////			goals.add(goal);
-////			goal = new Goal();
-////		}
-////
-////		newGame.setGoals(goals);
-//
-//
-//
-//
-////		return newGame;
-//		return game;
-//	}
-
-
-
-	private Goal findGoal(){
-		return null;
-	}
-
 
 	public Game createGameWithDTO(GameDTO game) {
 
@@ -137,19 +24,6 @@ public class GameHoles {
 		newGame.setPostEmotions(game.getPostEmotions());
 		newGame.setPreEmotions(game.getPreEmotions());
 		newGame.setTotalScore(game.getTotalScore());
-
-//		List<Hole> holes = new ArrayList<>();
-//		Hole hole = new Hole();
-//
-//		for(Hole h: game.getHoles()) {
-//			hole.setHoleNumber(h.getHoleNumber());
-//			hole.setScore(h.getScore());
-//			hole.setGame(newGame);
-//			holes.add(hole);
-//			hole = new Hole();
-//		}
-//
-//		newGame.setHoles(holes);
 
 
 		Goal goal = null;
@@ -178,10 +52,6 @@ public class GameHoles {
 			hole.setGame(newGame);
 			newGame.getHoles().add(hole);
 		}
-
-
-
-
 
 		return newGame;
 

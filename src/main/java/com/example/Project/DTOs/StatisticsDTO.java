@@ -2,11 +2,13 @@ package com.example.Project.DTOs;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Map;
 
 @Getter
 @Setter
+@ToString
 public class StatisticsDTO {
 
     /**
@@ -17,5 +19,6 @@ public class StatisticsDTO {
     private Map<String, Object> leastFrequentGoal;
     private Map<String, Object> highestScoredGoal;
     private Map<String, Object> lowestScoredGoal;
+    private Map<String, Object> goalsAndGameCount;
 
 }

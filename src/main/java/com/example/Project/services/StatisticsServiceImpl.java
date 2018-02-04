@@ -29,6 +29,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsDTO.setLeastFrequentGoal(leastFrequentGoal());
         statisticsDTO.setHighestScoredGoal(highestScoredGoal());
         statisticsDTO.setLowestScoredGoal(lowestScoredGoal());
+        statisticsDTO.setGoalsAndGameCount(goalsAndGameCount());
+
+
         return statisticsDTO;
     }
 
@@ -47,7 +50,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (RuntimeException e){
             e.printStackTrace();
         }
-        return new HashMap<String, Object>();
+        return new HashMap<>();
     }
 
     @Override
@@ -59,7 +62,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (RuntimeException e){
             e.printStackTrace();
         }
-        return new HashMap<String, Object>();
+        return new HashMap<>();
     }
 
     @Override
@@ -71,7 +74,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (RuntimeException e){
             e.printStackTrace();
         }
-        return new HashMap<String, Object>();
+        return new HashMap<>();
     }
 
     @Override
@@ -83,8 +86,23 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (RuntimeException e){
             e.printStackTrace();
         }
-        return new HashMap<String, Object>();
+        return new HashMap<>();
 
+    }
+
+    @Override
+    public Map<String, Object> goalsAndGameCount() {
+
+        try{
+            List<Object[]> result = gameRepository.allGoalsAndGameCount();
+            Map<String, Object> map = null;
+            return extractData(result,map);
+
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 

@@ -41,109 +41,8 @@ public class GameServiceImpl implements GameService {
 		}
 		return gameOptional.get();
 	}
-// THIS WORKS
-	@Transactional
-	@Override
-	public Game createOrUpdate(Game obj) {
-
-		// Todo
-		// Figure out tomorrow the correct hibernate mapping
-		// It doesn't quite work on the goals, but works fine on the holes
-
-		for(Hole h: obj.getHoles()){
-			h.setGame(obj);
-		}
-
-//		for(Goal g: obj.getGoals()){
-//			Optional<Goal> goalOptional = goalRepository.findByName(g.getName());
-//
-//			if(goalOptional.isPresent()){
-//				obj.getGoals().add(goalOptional.get());
-//			}
-//		}
 
 
-		for(Iterator<Goal> g = obj.getGoals().iterator(); g.hasNext();){
-
-			Goal goal = g.next();
-			Optional<Goal> goalOptional = goalRepository.findByName(goal.getName());
-
-			if(goalOptional.isPresent()){
-				g.remove();
-				obj.getGoals().add(goal);
-			}
-
-		}
-
-//		for(Iterator<Goal> g = obj.getGoals().iterator(); g.hasNext();){
-//
-//			Goal goal = g.next();
-//
-//			if(goalRepository.existsByName(goal.getName())){
-//				g.remove();
-//				goal.getGames().add(obj);
-//				obj.getGoals().add(goal);
-//			}
-//
-//		}
-
-//		System.out.println("We are here");
-//
-//
-//		for(Goal g: obj.getGoals()){
-//			g.getGames().add(obj);
-//			obj.getGoals().add(g);
-//		}
-
-
-		System.out.println("About to save");
-		return gameRepository.save(obj);
-	}
-
-//	@Transactional
-//	@Override
-//	public Game createOrUpdate(Game obj) {
-//		Game returned = gameHoles.createGame(obj);
-////		List<Game> games = new ArrayList<>();
-////		Goal saved = null;
-//
-////		for(Goal g: returned.getGoals()){
-////
-////			Optional<Goal> goal = goalRepository.findByName(g.getName());
-////
-////			if(!goal.isPresent()){
-////
-////			//	saved = goalRepository.save(g);
-////				games.add(returned);
-////				saved = new Goal();
-////				saved.setGames(games);
-////				goalRepository.save(saved);
-////
-////			} else{
-////				saved = goal.get();
-////				games.add(returned);
-////				saved.setGames(games);
-////				goalRepository.save(saved);
-////			}
-////
-////			System.out.println("Does exist? " + goal.toString());
-////
-////
-////		}
-//
-//
-//
-//
-//
-//		System.out.println("About to save");
-//		return gameRepository.save(returned);
-//	}
-
-	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public Game create(GameDTO dto) {
@@ -152,7 +51,6 @@ public class GameServiceImpl implements GameService {
 
 		System.out.println("About to save");
 		return gameRepository.save(returned);
-//		return null;
 	}
 
 	@Override

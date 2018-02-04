@@ -54,4 +54,14 @@ public interface GameRepository extends CrudRepository<Game,Long> {
             "LIMIT 1 ", nativeQuery = true)
     List<Object[]> calculateLowestScore();
 
+    @Query(value = "SELECT gl.name, count(g.id) AS Games FROM goal gl " +
+            "INNER JOIN goal_game gg " +
+            "ON gl.id = gg.goal_id " +
+            "INNER JOIN game g " +
+            "ON gg.game_id = g.id " +
+            "GROUP BY gl.name " +
+            "ORDER BY Games DESC "
+            , nativeQuery = true)
+    List<Object[]> allGoalsAndGameCount();
+
 }

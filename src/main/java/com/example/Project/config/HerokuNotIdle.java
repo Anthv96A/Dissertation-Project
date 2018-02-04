@@ -10,8 +10,8 @@ public class HerokuNotIdle {
 
     private static final Logger LOG = LoggerFactory.getLogger(HerokuNotIdle.class);
 
-    // Fire to Heroku every 5 minutes to keep connection alive
-    @Scheduled(fixedDelay = 300000)
+    // Fire to Heroku every 10 minutes to keep connection alive
+    @Scheduled(fixedDelay = 600000)
     public void herokuNotIdle(){
         LOG.debug("Heroku not idle execution");
         RestTemplate restTemplate = new RestTemplate();

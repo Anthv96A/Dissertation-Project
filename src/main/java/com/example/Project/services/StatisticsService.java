@@ -19,6 +19,8 @@ public interface StatisticsService {
 
     Map<String, Object> lowestScoredGoal();
 
+    Map<String, Object> goalsAndGameCount();
+
 
 
 }

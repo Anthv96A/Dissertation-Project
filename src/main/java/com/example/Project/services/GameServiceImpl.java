@@ -1,10 +1,7 @@
 package com.example.Project.services;
 
 import com.example.Project.DTOs.GameDTO;
-import com.example.Project.components.GameToGameDTO;
-import com.example.Project.domain.Goal;
-import com.example.Project.domain.Hole;
-import com.example.Project.repositories.GoalRepository;
+import com.example.Project.converters.GameToGameDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,9 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.Project.components.GameHoles;
 import com.example.Project.domain.Game;
 import com.example.Project.repositories.GameRepository;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +26,6 @@ public class GameServiceImpl implements GameService {
 
 	private final GameHoles gameHoles;
 	private final GameRepository gameRepository;
-	private final GoalRepository goalRepository;
 	private final GameToGameDTO gameToGameDTO;
 
 
@@ -43,28 +40,66 @@ public class GameServiceImpl implements GameService {
 	}
 
 
-
 	@Override
 	public Game create(GameDTO dto) {
 
 		Game returned = gameHoles.createGameWithDTO(dto);
-
-		System.out.println("About to save");
 		return gameRepository.save(returned);
 	}
 
 	@Override
 	public GameDTO findLastGameByGoalName(String name) {
 
-		Optional<Goal> goal = goalRepository.findByName(name);
+//		Optional<Goal> goal = goalRepository.findByName(name);
+//
+//		if (!goal.isPresent()) {
+//			return null;
+//		}
+//
+//		List<Game> gameList = goal.get().getGames();
+//		Game lastGame = gameList.get(gameList.size() - 1);
+//
+//		GameDTO converted = gameToGameDTO.convert(lastGame);
+//
+//		if(converted == null){
+//			return new GameDTO();
+//		}
+//
+//		return converted;
 
-		if (!goal.isPresent()) {
-			return null;
+		Optional<Game> gameOptional = gameRepository.getLastGameByGoal(name);
+
+		if(!gameOptional.isPresent()){
+			return new GameDTO();
 		}
 
-		List<Game> gameList = goal.get().getGames();
-		Game lastGame = gameList.get(gameList.size() - 1);
+		return gameToGameDTO.convert(gameOptional.get());
 
-		return gameToGameDTO.convert(lastGame);
+
+	}
+
+	@Override
+	public List<GameDTO> findAllGamesWithinDatePeriod(String from, String to) {
+
+		List<GameDTO> gameDTOList = new ArrayList<>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//		System.out.println(from);
+//		System.out.println(to);
+		try{
+//			LocalDate dateFrom = LocalDate.parse(from);
+//			LocalDate dateTo = LocalDate.parse(to);
+			Date dateFrom = formatter.parse(from);
+			Date dateTo = formatter.parse(to);
+
+			gameRepository.findGameByDatePlayedBetweenOrderByDatePlayedDesc(dateFrom,dateTo).forEach(game ->
+					gameDTOList.add(gameToGameDTO.convert(game))
+			);
+		} catch (ParseException e){
+			e.printStackTrace();
+		} catch (RuntimeException e){
+			e.printStackTrace();
+		}
+
+		return gameDTOList;
 	}
 }

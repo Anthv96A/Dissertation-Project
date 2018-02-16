@@ -22,4 +22,10 @@ public class Goal {
 
     @ManyToMany(mappedBy = "goals", cascade = CascadeType.REFRESH)
     private List<Game> games = new ArrayList<>();
+
+    public Goal addGame(Game game){
+        this.games.add(game);
+        game.getGoals().add(this);
+        return this;
+    }
 }

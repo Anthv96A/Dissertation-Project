@@ -18,7 +18,7 @@ public class GameDTO {
 
 
     private String name;
-    private LocalDate datePlayed;
+    private String datePlayed;
     private Integer totalScore;
     private String preEmotions;
     private String postEmotions;
@@ -26,5 +26,6 @@ public class GameDTO {
     private List<Hole> holes = new ArrayList<>();
 
     private List<Goal> goals = new ArrayList<>();
+
 
 }

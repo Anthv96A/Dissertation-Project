@@ -3,7 +3,10 @@ package com.example.Project.repositories;
 import com.example.Project.domain.Game;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,4 +67,15 @@ public interface GameRepository extends CrudRepository<Game,Long> {
             , nativeQuery = true)
     List<Object[]> allGoalsAndGameCount();
 
+
+    @Query(value = "SELECT * FROM game g " +
+            "INNER JOIN goal_game gg ON g.id = gg.game_id " +
+            "INNER JOIN goal gl ON gg.goal_id = gl.id " +
+            "WHERE gl.name = :name " +
+            "ORDER BY g.id DESC " +
+            "LIMIT 1", nativeQuery = true)
+    Optional<Game> getLastGameByGoal(@Param("name") String name);
+
+
+    List<Game> findGameByDatePlayedBetweenOrderByDatePlayedDesc(Date from, Date after);
 }

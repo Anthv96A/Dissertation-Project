@@ -16,6 +16,5 @@ public class HerokuNotIdle {
         LOG.debug("Heroku not idle execution");
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity("https://sports-performance.herokuapp.com", String.class);
-        System.out.println(response);
     }
 }

@@ -21,23 +21,18 @@ import java.util.Optional;
 @CrossOrigin({"http://localhost:8100","file://"})
 public class StatisticsController {
 
-    private final GoalRepository goalRepository;
+
     private final StatisticsService statisticsService;
-
-
-
-    @GetMapping("/{name}")
-    public Goal getGoal(@PathVariable String name){
-        return goalRepository.findByName(name).get();
-    }
 
 
     @GetMapping("/all")
     public StatisticsDTO getAllStats(){
-        StatisticsDTO dto = statisticsService.getStatistics();
-     //   System.out.println(dto.toString());
-        return dto;
+        return statisticsService.getStatistics();
     }
+
+
+
+
 
 
 

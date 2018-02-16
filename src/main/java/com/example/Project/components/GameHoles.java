@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 import com.example.Project.domain.Game;
 import com.example.Project.domain.Hole;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+
 @Component
 @AllArgsConstructor
 public class GameHoles {
@@ -25,6 +30,8 @@ public class GameHoles {
 		newGame.setPreEmotions(game.getPreEmotions());
 		newGame.setTotalScore(game.getTotalScore());
 
+		java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+		newGame.setDatePlayed(today);
 
 		Goal goal = null;
 
@@ -32,13 +39,15 @@ public class GameHoles {
 
 			if(goalRepository.existsByName(g.getName())){
 				goal = goalRepository.findByName(g.getName()).get();
-				goal.getGames().add(newGame);
-				newGame.getGoals().add(goal);
+//				goal.getGames().add(newGame);
+//				newGame.getGoals().add(goal);
+				goal.addGame(newGame);
 			} else{
 				goal = new Goal();
 				goal.setName(g.getName());
-				goal.getGames().add(newGame);
-				newGame.getGoals().add(goal);
+				goal.addGame(newGame);
+//				goal.getGames().add(newGame);
+//				newGame.getGoals().add(goal);
 			}
 
 		}

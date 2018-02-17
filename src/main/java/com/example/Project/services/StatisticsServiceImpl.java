@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +19,10 @@ import java.util.Map;
 @Transactional
 @AllArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
+
+    /**
+     * Game Repository to select all the necessary queries
+     */
 
     private final GameRepository gameRepository;
 
@@ -30,10 +37,99 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsDTO.setHighestScoredGoal(highestScoredGoal());
         statisticsDTO.setLowestScoredGoal(lowestScoredGoal());
         statisticsDTO.setGoalsAndGameCount(goalsAndGameCount());
+        return statisticsDTO;
+    }
 
+    /**
+     *
+     *
+     * @param from
+     * @param to
+     * @return Time period data
+     */
+    @Override
+    public StatisticsDTO getStatisticsWithinTimePeriod(String from, String to) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        StatisticsDTO statisticsDTO = new StatisticsDTO();
+
+        try {
+            Date dateFrom = formatter.parse(from);
+            Date dateTo = formatter.parse(to);
+
+            statisticsDTO.setTotalGames(totalGamesInPeriod(dateFrom,dateTo));
+            statisticsDTO.setMostFrequentGoal(mostFrequentGoalForPeriod(dateFrom,dateTo));
+            statisticsDTO.setLeastFrequentGoal(leastFrequentGoalForPeriod(dateFrom,dateTo));
+            statisticsDTO.setHighestScoredGoal(highestScoredGoalForPeriod(dateFrom,dateTo));
+            statisticsDTO.setLowestScoredGoal(lowestScoredGoalForPeriod(dateFrom,dateTo));
+            statisticsDTO.setGoalsAndGameCount(goalsAndGameCountForPeriod(dateFrom,dateTo));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return statisticsDTO;
     }
+
+    @Override
+    public Map<String, Object> mostFrequentGoalForPeriod(Date from, Date to) {
+        try{
+            List<Object[]> result = gameRepository.calculateMostFrequentGoalForPeriod(from,to);
+            return extractData(result);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
+
+    @Override
+    public Map<String, Object> leastFrequentGoalForPeriod(Date from, Date to) {
+        try{
+            List<Object[]> result = gameRepository.calculateLeastFrequentGoalForPeriod(from,to);
+            return extractData(result);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
+
+    @Override
+    public Map<String, Object> highestScoredGoalForPeriod(Date from, Date to) {
+        try{
+            List<Object[]> result = gameRepository.calculateHighestScoredGoalForPeriod(from,to);
+            return extractData(result);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
+
+    @Override
+    public Map<String, Object> lowestScoredGoalForPeriod(Date from, Date to) {
+        try{
+            List<Object[]> result = gameRepository.calculateLowestScoredGoalForPeriod(from,to);
+            return extractData(result);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
+
+    @Override
+    public Map<String, Object> goalsAndGameCountForPeriod(Date from, Date to) {
+        try{
+            List<Object[]> result = gameRepository.timePeriodGoalsAndGameCount(from,to);
+            return extractData(result);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
+
+    @Override
+    public long totalGamesInPeriod(Date from, Date to){
+        return gameRepository.countGamesByDatePlayedBetween(from,to);
+    }
+
 
     @Override
     public long totalGames(){
@@ -45,8 +141,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         try{
             List<Object[]> result = gameRepository.calculateMostFrequentGoal();
-            Map<String,Object> map = null;
-            return extractData(result, map);
+            return extractData(result);
         } catch (RuntimeException e){
             e.printStackTrace();
         }
@@ -57,8 +152,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public Map<String, Object> leastFrequentGoal() {
         try{
             List<Object[]> result = gameRepository.calculateLeastFrequentGoal();
-            Map<String,Object> map = null;
-            return extractData(result, map);
+            return extractData(result);
         } catch (RuntimeException e){
             e.printStackTrace();
         }
@@ -69,8 +163,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public Map<String, Object> highestScoredGoal() {
         try{
             List<Object[]> result = gameRepository.calculateHighestScore();
-            Map<String,Object> map = null;
-            return extractData(result, map);
+            return extractData(result);
         } catch (RuntimeException e){
             e.printStackTrace();
         }
@@ -81,8 +174,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public Map<String, Object> lowestScoredGoal() {
         try{
             List<Object[]> result = gameRepository.calculateLowestScore();
-            Map<String,Object> map = null;
-            return extractData(result, map);
+            return extractData(result);
         } catch (RuntimeException e){
             e.printStackTrace();
         }
@@ -95,8 +187,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         try{
             List<Object[]> result = gameRepository.allGoalsAndGameCount();
-            Map<String, Object> map = null;
-            return extractData(result,map);
+            return extractData(result);
 
         } catch (RuntimeException e){
             e.printStackTrace();
@@ -106,9 +197,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
 
-    private Map<String, Object> extractData(List<Object[]> result, Map<String, Object> map){
+
+    private Map<String, Object> extractData(List<Object[]> result){
+        Map<String,Object> map = new HashMap<>();
         if(result != null && !result.isEmpty()){
-            map = new HashMap<>();
             for(Object[] objects: result){
                 if(objects[1] instanceof BigInteger){
                     map.put((String) objects[0], (BigInteger) objects[1]);
@@ -122,25 +214,6 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
 
-//    @Override
-//    public Map<String, BigInteger> mostFrequentGoal() {
-//
-//        try{
-//            List<Object[]> result = gameRepository.calculateMostFrequentGoal();
-//            Map<String,BigInteger> map = null;
-//
-//            if(result != null && !result.isEmpty()){
-//                map = new HashMap<>();
-//                for(Object[] objects: result){
-//                    map.put((String) objects[0], (BigInteger)objects[1]);
-//                }
-//            }
-//            return map;
-//        } catch (RuntimeException e){
-//            e.printStackTrace();
-//        }
-//        return new HashMap<String, BigInteger>();
-//    }
 
 
 }

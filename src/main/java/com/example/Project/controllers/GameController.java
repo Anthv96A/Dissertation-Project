@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("/game")
 @CrossOrigin({"http://localhost:8100","file://"})
 public class GameController {
+
     
     private final GameService gameService;
 

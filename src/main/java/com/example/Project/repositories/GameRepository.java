@@ -78,4 +78,52 @@ public interface GameRepository extends CrudRepository<Game,Long> {
 
 
     List<Game> findGameByDatePlayedBetweenOrderByDatePlayedDesc(Date from, Date after);
+
+
+    @Query(value = "SELECT g.name, count(g.id) AS Games FROM game g " +
+            "WHERE g.date_played BETWEEN :from AND :to " +
+            "GROUP BY g.name " +
+            "ORDER BY Games DESC " +
+            "LIMIT 1"
+        , nativeQuery = true)
+    List<Object[]> calculateMostFrequentGoalForPeriod(@Param("from") Date from, @Param("to") Date to);
+
+    @Query(value = "SELECT g.name, count(g.id) AS Games FROM game g " +
+            "WHERE g.date_played BETWEEN :from AND :to " +
+            "GROUP BY g.name " +
+            "ORDER BY Games ASC " +
+            "LIMIT 1"
+            , nativeQuery = true)
+    List<Object[]> calculateLeastFrequentGoalForPeriod(@Param("from") Date from, @Param("to") Date to);
+
+    @Query(value = "SELECT g.name, sum(g.total_score) AS Games FROM game g " +
+            "WHERE g.date_played BETWEEN :from AND :to " +
+            "GROUP BY g.name " +
+            "ORDER BY Games DESC " +
+            "LIMIT 1"
+            , nativeQuery = true)
+    List<Object[]> calculateHighestScoredGoalForPeriod(@Param("from") Date from, @Param("to") Date to);
+
+    @Query(value = "SELECT g.name, sum(g.total_score) AS Games FROM game g " +
+            "WHERE g.date_played BETWEEN :from AND :to " +
+            "GROUP BY g.name " +
+            "ORDER BY Games ASC " +
+            "LIMIT 1"
+            , nativeQuery = true)
+    List<Object[]> calculateLowestScoredGoalForPeriod(@Param("from") Date from, @Param("to") Date to);
+
+
+    @Query(value = "SELECT g.name, count(g.id) AS Games FROM game g " +
+            "WHERE g.date_played BETWEEN :from AND :to " +
+            "GROUP BY g.name " +
+            "ORDER BY Games DESC "
+            , nativeQuery = true)
+    List<Object[]> timePeriodGoalsAndGameCount(@Param("from") Date from, @Param("to") Date to);
+
+    long countGamesByDatePlayedBetween(Date from, Date to);
+
+
+
+
 }
+

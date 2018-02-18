@@ -2,12 +2,13 @@ package com.example.Project.services;
 
 import com.example.Project.DTOs.GameDTO;
 import com.example.Project.converters.GameToGameDTO;
+import com.example.Project.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.Project.components.GameHoles;
+import com.example.Project.converters.GameDTOToGame;
 import com.example.Project.domain.Game;
 import com.example.Project.repositories.GameRepository;
 import java.text.ParseException;
@@ -24,7 +25,7 @@ import java.util.Optional;
 public class GameServiceImpl implements GameService {
 	
 
-	private final GameHoles gameHoles;
+	private final GameDTOToGame gameDTOToGame;
 	private final GameRepository gameRepository;
 	private final GameToGameDTO gameToGameDTO;
 
@@ -34,7 +35,7 @@ public class GameServiceImpl implements GameService {
 		Optional<Game> gameOptional = gameRepository.findById(id);
 
 		if(!gameOptional.isPresent()){
-			throw new RuntimeException("Game not found");
+			throw new NotFoundException("Game not found");
 		}
 		return gameOptional.get();
 	}
@@ -43,7 +44,7 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Game create(GameDTO dto) {
 
-		Game returned = gameHoles.createGameWithDTO(dto);
+		Game returned = gameDTOToGame.createGameWithDTO(dto);
 		return gameRepository.save(returned);
 	}
 
@@ -83,11 +84,7 @@ public class GameServiceImpl implements GameService {
 
 		List<GameDTO> gameDTOList = new ArrayList<>();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//		System.out.println(from);
-//		System.out.println(to);
 		try{
-//			LocalDate dateFrom = LocalDate.parse(from);
-//			LocalDate dateTo = LocalDate.parse(to);
 			Date dateFrom = formatter.parse(from);
 			Date dateTo = formatter.parse(to);
 

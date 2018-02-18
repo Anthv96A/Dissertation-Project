@@ -41,5 +41,19 @@ public class StatisticsControllerTest {
                 .andExpect(status().isOk());
         verify(statisticsService, times(1)).getStatistics();
     }
+    @Test
+    public void testGetAllStatsInPeriod() throws Exception {
+        StatisticsDTO statisticsDTO = new StatisticsDTO();
+
+        String from = "2018-02-08";
+        String to = "2018-02-15";
+
+        when(statisticsController.getAllStatsForPeriod(from,to)).thenReturn(statisticsDTO);
+
+        mockMvc.perform(get("/stats/week/2018-02-08/2018-02-15"))
+                .andExpect(status().isOk());
+        verify(statisticsService, times(1)).getStatisticsWithinTimePeriod(from,to);
+    }
+
 
 }

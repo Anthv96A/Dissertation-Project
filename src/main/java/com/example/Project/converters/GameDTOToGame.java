@@ -1,4 +1,4 @@
-package com.example.Project.components;
+package com.example.Project.converters;
 
 
 import com.example.Project.DTOs.GameDTO;
@@ -17,7 +17,7 @@ import java.util.Date;
 
 @Component
 @AllArgsConstructor
-public class GameHoles {
+public class GameDTOToGame {
 
 	private final GoalRepository goalRepository;
 

@@ -3,19 +3,20 @@ package com.example.Project.controllers;
 import com.example.Project.DTOs.GameDTO;
 import com.example.Project.domain.Game;
 import com.example.Project.services.GameService;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/game")
 @CrossOrigin({"http://localhost:8100","file://"})
 public class GameController {
 
-    
     private final GameService gameService;
+
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
+    }
 
     @GetMapping("/{id}")
     public Game findById(@PathVariable Long id){

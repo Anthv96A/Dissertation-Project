@@ -2,14 +2,23 @@ package com.example.Project.converters;
 
 import com.example.Project.DTOs.GameDTO;
 import com.example.Project.domain.Game;
+import com.sun.istack.internal.Nullable;
+import lombok.Synchronized;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GameToGameDTO {
 
 
+    @Nullable
+    @Synchronized
     public GameDTO convert(Game game){
-        GameDTO gameDTO = new GameDTO();
+
+        if(game == null){
+            return null;
+        }
+
+        final GameDTO gameDTO = new GameDTO();
         gameDTO.setName(game.getName());
         gameDTO.setDatePlayed(game.getDatePlayed().toString());
         gameDTO.setHoles(game.getHoles());

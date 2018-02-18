@@ -13,11 +13,6 @@ public interface GoalRepository extends CrudRepository<Goal,Long> {
 
     Optional<Goal> findByName(String name);
 
-//    @Query(value = "SELECT * FROM goal g " +
-//            "INNER JOIN goal_game gg ON g.id = gg.goal_id" +
-//            "INNER JOIN game gm ON gg.game_id = gm.id" +
-//            "WHERE g.name = : name ", nativeQuery = true)
-//    Optional<Goal> getLastGameByGoal(@Param("name") String name);
 
 
 

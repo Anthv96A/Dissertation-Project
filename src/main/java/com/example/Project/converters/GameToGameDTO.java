@@ -2,7 +2,6 @@ package com.example.Project.converters;
 
 import com.example.Project.DTOs.GameDTO;
 import com.example.Project.domain.Game;
-import com.sun.istack.internal.Nullable;
 import lombok.Synchronized;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 public class GameToGameDTO {
 
 
-    @Nullable
     @Synchronized
     public GameDTO convert(Game game){
 

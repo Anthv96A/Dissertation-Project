@@ -11,10 +11,10 @@ public class HerokuNotIdle {
     private static final Logger LOG = LoggerFactory.getLogger(HerokuNotIdle.class);
 
     // Fire to Heroku every 10 minutes to keep connection alive
-    @Scheduled(fixedDelay = 600000)
-    public void herokuNotIdle(){
-        LOG.debug("Heroku not idle execution");
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity("https://sports-performance.herokuapp.com", String.class);
-    }
+//    @Scheduled(fixedDelay = 600000)
+//    public void herokuNotIdle(){
+//        LOG.debug("Heroku not idle execution");
+//        RestTemplate restTemplate = new RestTemplate();
+//        ResponseEntity<String> response = restTemplate.getForEntity("https://sports-performance.herokuapp.com", String.class);
+//    }
 }

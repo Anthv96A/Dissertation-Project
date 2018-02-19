@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class HerokuConfig {
 
-    @Bean
-    public HerokuNotIdle herokuNotIdle(){
-        return new HerokuNotIdle();
-    }
+//    @Bean
+//    public HerokuNotIdle herokuNotIdle(){
+//        return new HerokuNotIdle();
+//    }
 }

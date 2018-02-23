@@ -8,9 +8,7 @@ import java.util.List;
 public interface GameService extends AbstractService<Game> {
 
     Game create(GameDTO dto);
-
     GameDTO findLastGameByGoalName(String name);
-
     List<GameDTO> findAllGamesWithinDatePeriod(String from, String to);
 
 }

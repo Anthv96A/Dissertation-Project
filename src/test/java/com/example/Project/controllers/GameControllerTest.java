@@ -25,13 +25,9 @@ public class GameControllerTest {
     private GameService gameService;
 
     private GameController gameController;
-
     private MockMvc mockMvc;
-
     private Game game;
-
     private GameDTO gameDTO;
-
     private List<GameDTO> gameDTOList;
 
     @Before
@@ -55,10 +51,9 @@ public class GameControllerTest {
 
     @Test
     public void testFindByIdNotFound() throws Exception {
-        game.setId(1L);
 
         when(gameService.findById(anyLong())).thenThrow(NotFoundException.class);
-        mockMvc.perform(get("/game/1"))
+        mockMvc.perform(get("/game/122222"))
                 .andExpect(status().isNotFound());
     }
 
@@ -71,6 +66,15 @@ public class GameControllerTest {
         mockMvc.perform(get("/game/1")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCouldNotSaveNewGame() throws Exception {
+
+        when(gameService.create(any())).thenThrow(RuntimeException.class);
+        mockMvc.perform(get("/game/bad-request")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -110,7 +114,6 @@ public class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
         verify(gameService, times(1)).findAllGamesWithinDatePeriod(from,to);
-
 
     }
 

@@ -3,6 +3,7 @@ package com.example.Project.converters;
 
 import com.example.Project.DTOs.GameDTO;
 import com.example.Project.domain.Goal;
+import com.example.Project.exceptions.NotFoundException;
 import com.example.Project.repositories.GoalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -21,46 +23,44 @@ public class GameDTOToGame {
 
 	private final GoalRepository goalRepository;
 
-	public Game createGameWithDTO(GameDTO game) {
+	public Game createGameWithDTO(final GameDTO game) {
 
-		Game newGame = new Game();
+		final Game newGame = new Game();
 
 		newGame.setName(game.getName());
 		newGame.setPostEmotions(game.getPostEmotions());
 		newGame.setPreEmotions(game.getPreEmotions());
 		newGame.setTotalScore(game.getTotalScore());
 
-		java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+		final java.sql.Date today = new java.sql.Date(
+				Calendar.getInstance()
+				.getTime().getTime());
+
 		newGame.setDatePlayed(today);
 
-		Goal goal = null;
-
-		for(Goal g: game.getGoals()){
-
-			if(goalRepository.existsByName(g.getName())){
-				goal = goalRepository.findByName(g.getName()).get();
-//				goal.getGames().add(newGame);
-//				newGame.getGoals().add(goal);
+		game.getGoals().forEach(g -> {
+			final Goal goal;
+			if (goalRepository.existsByName(g.getName())) {
+				Optional<Goal> goalOptional = goalRepository.findByName(g.getName());
+				if (goalOptional.isPresent()) {
+					goal = goalOptional.get();
+				} else {
+					throw new NotFoundException("Goal not found");
+				}
 				goal.addGame(newGame);
-			} else{
+			} else {
 				goal = new Goal();
 				goal.setName(g.getName());
 				goal.addGame(newGame);
-//				goal.getGames().add(newGame);
-//				newGame.getGoals().add(goal);
 			}
+		});
 
-		}
-
-		Hole hole = null;
-
-		for(Hole h: game.getHoles()){
-			hole = new Hole();
+		game.getHoles().forEach(h ->{
+			final Hole hole = new Hole();
 			hole.setHoleNumber(h.getHoleNumber());
 			hole.setScore(h.getScore());
-			hole.setGame(newGame);
-			newGame.getHoles().add(hole);
-		}
+			newGame.addHole(hole);
+		});
 
 		return newGame;
 

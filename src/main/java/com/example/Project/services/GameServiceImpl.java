@@ -32,49 +32,49 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public Game findById(Long id) {
+
 		Optional<Game> gameOptional = gameRepository.findById(id);
 
 		if(!gameOptional.isPresent()){
 			throw new NotFoundException("Game not found");
 		}
 		return gameOptional.get();
+
 	}
 
 
 	@Override
 	public Game create(GameDTO dto) {
 
-		Game returned = gameDTOToGame.createGameWithDTO(dto);
-		return gameRepository.save(returned);
+		try {
+			Game transformed = gameDTOToGame.createGameWithDTO(dto);
+			return gameRepository.save(transformed);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			throw new RuntimeException("An error occurred");
+		}
+
+
+
 	}
 
 	@Override
 	public GameDTO findLastGameByGoalName(String name) {
 
-//		Optional<Goal> goal = goalRepository.findByName(name);
-//
-//		if (!goal.isPresent()) {
-//			return null;
-//		}
-//
-//		List<Game> gameList = goal.get().getGames();
-//		Game lastGame = gameList.get(gameList.size() - 1);
-//
-//		GameDTO converted = gameToGameDTO.convert(lastGame);
-//
-//		if(converted == null){
-//			return new GameDTO();
-//		}
-//
-//		return converted;
+		try{
+			Optional<Game> gameOptional = gameRepository.getLastGameByGoal(name);
 
-		Optional<Game> gameOptional = gameRepository.getLastGameByGoal(name);
+			if(!gameOptional.isPresent()){
+				return new GameDTO();
+			}
 
-		if(!gameOptional.isPresent()){
-			return new GameDTO();
+			return gameToGameDTO.convert(gameOptional.get());
+
+		} catch (RuntimeException e){
+			e.printStackTrace();
+			throw new RuntimeException("An error occurred ");
 		}
 
-		return gameToGameDTO.convert(gameOptional.get());
 
 
 	}
@@ -84,19 +84,32 @@ public class GameServiceImpl implements GameService {
 
 		List<GameDTO> gameDTOList = new ArrayList<>();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		try{
-			Date dateFrom = formatter.parse(from);
-			Date dateTo = formatter.parse(to);
 
-			gameRepository.findGameByDatePlayedBetweenOrderByDatePlayedDesc(dateFrom,dateTo).forEach(game ->
-					gameDTOList.add(gameToGameDTO.convert(game))
-			);
-		} catch (ParseException e){
-			e.printStackTrace();
+		try{
+			try{
+				Date dateFrom = formatter.parse(from);
+				Date dateTo = formatter.parse(to);
+
+				gameRepository.findGameByDatePlayedBetweenOrderByDatePlayedDesc(dateFrom,dateTo).forEach(game ->
+						gameDTOList.add(gameToGameDTO.convert(game))
+				);
+			} catch (ParseException e){
+				e.printStackTrace();
+			}
+
 		} catch (RuntimeException e){
 			e.printStackTrace();
+			throw new RuntimeException("An error occurred");
 		}
-
 		return gameDTOList;
+
+
+
+
+
+
+
+
+
 	}
 }

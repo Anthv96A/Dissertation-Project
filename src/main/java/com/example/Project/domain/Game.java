@@ -44,5 +44,12 @@ public class Game {
 	private List<Goal> goals = new ArrayList<>();
 
 
+    public Game addHole(Hole hole){
+        hole.setGame(this);
+        this.holes.add(hole);
+        return this;
+    }
+
+
 
 }

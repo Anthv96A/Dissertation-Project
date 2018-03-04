@@ -15,17 +15,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * By Anthony Vest
+ */
+
 @Service
 @Transactional
-@AllArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
     /**
      * Game Repository to select all the necessary queries
+     * Final to make the repository immutable.
      */
 
     private final GameRepository gameRepository;
 
+    /**
+     *
+     * @param gameRepository
+     *  Constuctor based dependency injection
+     */
+
+    public StatisticsServiceImpl(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
+    }
+
+    /**
+     *
+     * @return a statistics DTO Object, setting the values of all data using methods in class
+     */
 
     @Override
     public StatisticsDTO getStatistics(){
@@ -70,6 +88,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         return statisticsDTO;
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return Most Frequent Goal between selected dates
+     */
+
     @Override
     public Map<String, Object> mostFrequentGoalForPeriod(Date from, Date to) {
         try{
@@ -80,6 +105,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return new HashMap<>();
     }
+
+    /**
+     *
+     * @param from
+     * @param to
+     * @return Least Frequent Goal between selected dates
+     */
 
     @Override
     public Map<String, Object> leastFrequentGoalForPeriod(Date from, Date to) {
@@ -92,6 +124,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new HashMap<>();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return Highest Scored Goal between selected dates
+     */
+
     @Override
     public Map<String, Object> highestScoredGoalForPeriod(Date from, Date to) {
         try{
@@ -102,6 +141,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return new HashMap<>();
     }
+
+    /**
+     *
+     * @param from
+     * @param to
+     * @return Lowest Scored Goal between selected dates
+     */
 
     @Override
     public Map<String, Object> lowestScoredGoalForPeriod(Date from, Date to) {
@@ -114,6 +160,12 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new HashMap<>();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return Returns number of games per goal between dates
+     */
     @Override
     public Map<String, Object> goalsAndGameCountForPeriod(Date from, Date to) {
         try{
@@ -125,17 +177,32 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new HashMap<>();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return a long value counting the number of games between two dates.
+     */
+
     @Override
     public long totalGamesInPeriod(Date from, Date to){
         return gameRepository.countGamesByDatePlayedBetween(from,to);
     }
 
+    /**
+     *
+     * @return a long value counting the number of games.
+     */
 
     @Override
     public long totalGames(){
         return gameRepository.count();
     }
 
+    /**
+     *
+     * @return The most frequent goal
+     */
     @Override
     public Map<String, Object> mostFrequentGoal() {
 
@@ -148,6 +215,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new HashMap<>();
     }
 
+    /**
+     *
+     * @return The least frequent goal
+     */
+
     @Override
     public Map<String, Object> leastFrequentGoal() {
         try{
@@ -159,6 +231,10 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new HashMap<>();
     }
 
+    /**
+     *
+     * @return The highest scored goal
+     */
     @Override
     public Map<String, Object> highestScoredGoal() {
         try{
@@ -169,7 +245,10 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return new HashMap<>();
     }
-
+    /**
+     *
+     * @return The lowest scored goal
+     */
     @Override
     public Map<String, Object> lowestScoredGoal() {
         try{
@@ -181,6 +260,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new HashMap<>();
 
     }
+
+    /**
+     *
+     * @return Returns number of games per goal
+     */
 
     @Override
     public Map<String, Object> goalsAndGameCount() {
@@ -197,6 +281,14 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
 
+    /**
+     *
+     * @param result
+     * @return Extracts the data from the List<Object[]>
+     *     and puts the data in a key value hash map.
+     *     This is consistently reused through the class
+     *     to stop duplication of code.
+     */
 
     private Map<String, Object> extractData(List<Object[]> result){
         Map<String,Object> map = new HashMap<>();

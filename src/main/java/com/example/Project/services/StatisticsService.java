@@ -24,7 +24,4 @@ public interface StatisticsService {
     Map<String, Object> highestScoredGoalForPeriod(Date from, Date to);
     Map<String, Object> lowestScoredGoalForPeriod(Date from, Date to);
     Map<String, Object> goalsAndGameCountForPeriod(Date from, Date to);
-
-
-
 }

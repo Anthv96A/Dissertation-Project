@@ -19,12 +19,12 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public Game findById(@PathVariable Long id){
+    public GameDTO findById(@PathVariable Long id){
         return gameService.findById(id);
     }
 
     @PostMapping("/new")
-    public Game saveNewGame(@RequestBody GameDTO game) {
+    public GameDTO saveNewGame(@RequestBody GameDTO game) {
         return gameService.create(game);
     }
 

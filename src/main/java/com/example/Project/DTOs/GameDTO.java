@@ -23,7 +23,7 @@ public class GameDTO {
     private String preEmotions;
     private String postEmotions;
 
-    private List<Hole> holes = new ArrayList<>();
+    private List<HoleDTO> holes = new ArrayList<>();
 
     private List<Goal> goals = new ArrayList<>();
 

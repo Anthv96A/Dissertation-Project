@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 @Transactional
 public class GameServiceImpl implements GameService {
 	
@@ -29,54 +28,42 @@ public class GameServiceImpl implements GameService {
 	private final GameRepository gameRepository;
 	private final GameToGameDTO gameToGameDTO;
 
-
 	@Override
-	public Game findById(Long id) {
+	public GameDTO findById(Long id) {
 
 		Optional<Game> gameOptional = gameRepository.findById(id);
 
 		if(!gameOptional.isPresent()){
 			throw new NotFoundException("Game not found");
 		}
-		return gameOptional.get();
-
+		return gameToGameDTO.convert(gameOptional.get());
 	}
 
 
 	@Override
-	public Game create(GameDTO dto) {
-
+	public GameDTO create(GameDTO dto) {
 		try {
 			Game transformed = gameDTOToGame.createGameWithDTO(dto);
-			return gameRepository.save(transformed);
+			Game saved = gameRepository.save(transformed);
+			return gameToGameDTO.convert(saved);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			throw new RuntimeException("An error occurred");
 		}
-
-
-
 	}
 
 	@Override
 	public GameDTO findLastGameByGoalName(String name) {
-
 		try{
 			Optional<Game> gameOptional = gameRepository.getLastGameByGoal(name);
-
 			if(!gameOptional.isPresent()){
 				return new GameDTO();
 			}
-
 			return gameToGameDTO.convert(gameOptional.get());
-
 		} catch (RuntimeException e){
 			e.printStackTrace();
 			throw new RuntimeException("An error occurred ");
 		}
-
-
-
 	}
 
 	@Override
@@ -90,7 +77,8 @@ public class GameServiceImpl implements GameService {
 				Date dateFrom = formatter.parse(from);
 				Date dateTo = formatter.parse(to);
 
-				gameRepository.findGameByDatePlayedBetweenOrderByDatePlayedDesc(dateFrom,dateTo).forEach(game ->
+				gameRepository.findGameByDatePlayedBetweenOrderByDatePlayedDesc(dateFrom,dateTo)
+						.forEach(game ->
 						gameDTOList.add(gameToGameDTO.convert(game))
 				);
 			} catch (ParseException e){

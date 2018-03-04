@@ -42,9 +42,9 @@ public class GameControllerTest {
 
     @Test
     public void testFindById() throws Exception {
-        game.setId(1L);
 
-        when(gameService.findById(anyLong())).thenReturn(game);
+        when(gameService.findById(anyLong())).thenReturn(new GameDTO()
+        );
         mockMvc.perform(get("/game/1"))
                 .andExpect(status().isOk());
     }
@@ -61,7 +61,7 @@ public class GameControllerTest {
     public void testSaveNewGame() throws Exception {
         game.setId(1L);
 
-        when(gameService.create(any())).thenReturn(game);
+        when(gameService.create(any())).thenReturn(new GameDTO());
 
         mockMvc.perform(get("/game/1")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -9,10 +9,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
@@ -40,15 +37,15 @@ public class StatisticsServiceImplTest {
         // Given
         StatisticsDTO statisticsDTO = new StatisticsDTO();
         List<Object[]> returnedData = new ArrayList<>();
-
+        Map<String,Object> returnedHashMap = new HashMap<>();
         Long testLong = 10L;
 
         statisticsDTO.setTotalGames(testLong);
-        statisticsDTO.setGoalsAndGameCount(new HashMap<>());
-        statisticsDTO.setLowestScoredGoal(new HashMap<>());
-        statisticsDTO.setHighestScoredGoal(new HashMap<>());
-        statisticsDTO.setMostFrequentGoal(new HashMap<>());
-        statisticsDTO.setLeastFrequentGoal(new HashMap<>());
+        statisticsDTO.setGoalsAndGameCount(returnedHashMap);
+        statisticsDTO.setLowestScoredGoal(returnedHashMap);
+        statisticsDTO.setHighestScoredGoal(returnedHashMap);
+        statisticsDTO.setMostFrequentGoal(returnedHashMap);
+        statisticsDTO.setLeastFrequentGoal(returnedHashMap);
 
         // When
         when(gameRepository.count()).thenReturn(testLong);
@@ -59,10 +56,9 @@ public class StatisticsServiceImplTest {
         when(gameRepository.allGoalsAndGameCount()).thenReturn(returnedData);
 
         // Then
-
         StatisticsDTO returned = statisticsService.getStatistics();
-
         assertNotNull("NOT null", returned);
+
         verify(gameRepository, times(1)).count();
         verify(gameRepository, times(1)).calculateHighestScore();
         verify(gameRepository, times(1)).calculateLowestScore();
@@ -77,6 +73,7 @@ public class StatisticsServiceImplTest {
 
         StatisticsDTO statisticsDTO = new StatisticsDTO();
         List<Object[]> returnedData = new ArrayList<>();
+        Map<String,Object> returnedHashMap = new HashMap<>();
         Long testLong = 10L;
 
         String sourceStringFrom = "2018-02-10";
@@ -87,11 +84,11 @@ public class StatisticsServiceImplTest {
         Date testToDate = formatter.parse(sourceStringTo);
 
         statisticsDTO.setTotalGames(testLong);
-        statisticsDTO.setGoalsAndGameCount(new HashMap<>());
-        statisticsDTO.setLowestScoredGoal(new HashMap<>());
-        statisticsDTO.setHighestScoredGoal(new HashMap<>());
-        statisticsDTO.setMostFrequentGoal(new HashMap<>());
-        statisticsDTO.setLeastFrequentGoal(new HashMap<>());
+        statisticsDTO.setGoalsAndGameCount(returnedHashMap);
+        statisticsDTO.setLowestScoredGoal(returnedHashMap);
+        statisticsDTO.setHighestScoredGoal(returnedHashMap);
+        statisticsDTO.setMostFrequentGoal(returnedHashMap);
+        statisticsDTO.setLeastFrequentGoal(returnedHashMap);
 
         when(gameRepository.countGamesByDatePlayedBetween(testFromDate,testToDate)).thenReturn(testLong);
         when(gameRepository.calculateHighestScoredGoalForPeriod(testFromDate,testToDate)).thenReturn(returnedData);
@@ -102,7 +99,6 @@ public class StatisticsServiceImplTest {
 
 
         StatisticsDTO returned = statisticsService.getStatisticsWithinTimePeriod(sourceStringFrom,sourceStringTo);
-
         assertNotNull("NOT null from date range",returned);
 
         verify(gameRepository,times(1)).countGamesByDatePlayedBetween(testFromDate,testToDate);
@@ -124,13 +120,13 @@ public class StatisticsServiceImplTest {
         Date testFromDate = formatter.parse(sourceStringFrom);
         Date testToDate = formatter.parse(sourceStringTo);
 
-        when(gameRepository.countGamesByDatePlayedBetween(testFromDate,testToDate)).thenThrow(ParseException.class);
+        when(gameRepository.countGamesByDatePlayedBetween(testFromDate,testToDate))
+                .thenThrow(ParseException.class);
 
-        StatisticsDTO returned = statisticsService.getStatisticsWithinTimePeriod(sourceStringFrom,sourceStringTo);
+        StatisticsDTO returned = statisticsService
+                .getStatisticsWithinTimePeriod(sourceStringFrom,sourceStringTo);
 
         assertNull("Throw parse error", returned);
-
-
 
     }
 
@@ -264,10 +260,11 @@ public class StatisticsServiceImplTest {
         Date testFromDate = formatter.parse(sourceStringFrom);
         Date testToDate = formatter.parse(sourceStringTo);
         Long testLong = 10L;
-        when(gameRepository.countGamesByDatePlayedBetween(testFromDate,testToDate)).thenReturn(testLong);
+        when(gameRepository.countGamesByDatePlayedBetween(testFromDate,testToDate))
+                .thenReturn(testLong);
 
-        Long returned = statisticsService.totalGamesInPeriod(testFromDate,testToDate);
-
+        Long returned = statisticsService.
+                totalGamesInPeriod(testFromDate,testToDate);
         assertEquals("Should return 10 games", testLong, returned);
 
     }

@@ -49,12 +49,17 @@ public class GameServiceImplTest {
         Long testID = 1L;
         Game game = new Game();
         game.setId(testID);
+        game.setName("TEST");
         Optional<Game> gameOptional = Optional.of(game);
 
+        GameDTO gameDTO = new GameDTO();
+        gameDTO.setName("TEST");
+
         when(gameRepository.findById(anyLong())).thenReturn(gameOptional);
+        when(gameToGameDTO.convert(game)).thenReturn(gameDTO);
 
 
-        Game gameReturned = gameService.findById(testID);
+        GameDTO gameReturned = gameService.findById(testID);
 
         assertNotNull("Game returned not null", gameReturned);
         verify(gameRepository,times(1)).findById(anyLong());
@@ -67,7 +72,7 @@ public class GameServiceImplTest {
 
         when(gameRepository.findById(anyLong())).thenThrow(NotFoundException.class);
 
-        Game gameReturned = gameService.findById(1L);
+        GameDTO gameReturned = gameService.findById(1L);
 
         assertNull("Game returned null", gameReturned);
         verify(gameRepository,times(1)).findById(anyLong());
@@ -91,12 +96,15 @@ public class GameServiceImplTest {
 
         when(gameRepository.findById(anyLong())).thenReturn(gameOptional);
         when(gameRepository.save(any(Game.class)) ).thenReturn(savedGame);
+        when(gameToGameDTO.convert(any(Game.class))).thenReturn(gameDTO);
 
         // When
-        Game saved = gameService.create(gameDTO);
+        GameDTO saved = gameService.create(gameDTO);
+        GameDTO transformed = gameToGameDTO.convert(savedGame);
 
         // Then
         assertEquals(gameDTO.getName(),saved.getName());
+        assertNotNull(transformed);
         verify(gameRepository,times(1)).save(any(Game.class));
     }
 
@@ -134,7 +142,7 @@ public class GameServiceImplTest {
         when(gameRepository.save(any(Game.class)) ).thenThrow(RuntimeException.class);
 
         // When
-        Game saved = gameService.create(new GameDTO());
+        GameDTO saved = gameService.create(new GameDTO());
 
         // Then
         assertNull("Throw Runtime exception ",saved.getName());

@@ -12,12 +12,5 @@ import java.util.Optional;
 public interface GoalRepository extends CrudRepository<Goal,Long> {
 
     boolean existsByName(String name);
-
     Optional<Goal> findByName(String name);
-
-
-
-
-
-
 }

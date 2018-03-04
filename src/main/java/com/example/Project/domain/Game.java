@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +42,12 @@ public class Game {
 			inverseJoinColumns = @JoinColumn(name = "goal_id"))
 	private List<Goal> goals = new ArrayList<>();
 
-
+    /**
+     *
+     * @param hole
+     * @return Game back, this is custom helper method which helps stop duplication of code
+     *  and stops unnecessary code to achieve the same result.
+     */
     public Game addHole(Hole hole){
         hole.setGame(this);
         this.holes.add(hole);
